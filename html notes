@@ -1,0 +1,60 @@
+<html>: The root of an HTML document.
+
+
+<head>: Contains metadata about the page (e.g., <title>, <meta> tags).
+
+
+<body>: Holds the main content displayed in the browser.
+
+
+<h1> to <h6>: Headings, with <h1> usually being the main title and <h6> the smallest heading.
+
+
+<p>: Paragraphs for text.
+
+
+<div>: A generic container for grouping content.
+
+
+<span>: An inline container, often used for text or grouping inline elements.
+
+
+<a>: Anchor tag for links (href attribute sets the destination).
+
+
+<ul>, <ol>, <li>: Unordered and ordered lists and list items.
+
+
+<img>: For images (src attribute sets the image file).
+
+ID (id attribute) uniquely identifies a single element on the page.
+Should be used only once per page if possible.
+Commonly used to select or manipulate an element in JavaScript (e.g., document.getElementById("myId")) or in CSS with #myId.
+id= "Something" : this is identifying something. cannot make another id= "Something", it would have to be something else. you can reference ids later in the code
+
+
+Class (class attribute) is used for grouping elements that share a style or behavior.
+An element can have multiple classes.
+class= grouping data together to styling
+
+
+CSS-
+selector {
+  property: value;
+  property: value;
+}
+
+Some Common CSS Properties
+Colors and Backgrounds: color, background-color, background-image
+Typography: font-size, font-family, font-weight, text-align, line-height
+Spacing: margin, padding
+Layout: display, position, flex, grid, (rarely: float)
+Borders and Corners: border, border-radius
+Sizing: width, height, max-width, min-height
+
+Specificity: Certain selectors “beat” others:
+Inline styles (highest priority)
+IDs (#example)
+Classes (.example)
+Element selectors (p, h1)
+The universal selector (*) or inherited styles (lowest priority)
