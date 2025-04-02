@@ -35,29 +35,34 @@ const saveFilteredSongs = () => {
 
 const addSong = () => {
   const songText = songInput.value.trim();
-  if (songText !== '') {
-    const newSong = {
-      text: songText,
-      favorited: false
-    }
-
+  if (songText !== '' && !songs.some(song => song.text === songText)) {
+    const newSong = { text: songText, favorited: false };
     songs.push(newSong);
     songInput.value = '';
     renderSongs();
     saveSongs();
+  } else if (songText === '') {
+    alert('Please enter a song!');
+  } else {
+    alert('Song already exists!');
   }
-}
+};
 
 addButton.addEventListener('click', addSong);
 
 const renderSongs = () => {
   playlist.innerHTML = '';
-  
+
+  if (songs.length === 0) {
+    playlist.textContent = 'No songs in the playlist yet.';
+    return;
+  }
+
   songs.forEach((song, index) => {
     const li = document.createElement('li');
-    // Add a star next to the song's text if favorited
+    // Add a star next to the song's text if favorited using a ternary operator
     li.textContent = song.favorited ? `${song.text} ★` : song.text;
-    
+
     if (song.favorited) {
       li.classList.add('favorited');
     }
@@ -85,62 +90,56 @@ const renderSongs = () => {
 allButton.addEventListener('click', renderSongs);
 
 
+const toggleFavorite = (index) => {
+  songs[index].favorited = !songs[index].favorited;
+  renderSongs();
+  saveSongs();
+};
+
 
 const renderFilteredSongs = () => {
   playlist.innerHTML = '';
-  
+
+  const filteredsongs = songs.filter(song => song.favorited); // Dynamically filter favorites
+
+  if (filteredsongs.length === 0) {
+    playlist.textContent = 'No favorited songs yet.';
+    return;
+  }
+
   filteredsongs.forEach((song, index) => {
     const li = document.createElement('li');
     li.textContent = song.favorited ? `${song.text} ★` : song.text;
-    
-    if (song.favorited) {
-      li.classList.add('favorited');
-    }
-    
+
     const favoriteButton = document.createElement('button');
-    favoriteButton.textContent = 'Favorite';
+    favoriteButton.textContent = 'Unfavorite'; // Updated button text for filtered view
     favoriteButton.addEventListener('click', () => {
-      toggleFavorite(index);
+      toggleFavorite(songs.findIndex(s => s.text === song.text)); // Update original `songs`
+      renderFilteredSongs(); // Refresh view
     });
-    
+
     const deleteButton = document.createElement('button');
     deleteButton.textContent = 'Delete';
     deleteButton.addEventListener('click', () => {
-      deleteSong(index);
-      alert('Song removed from your Playlist');
+      deleteSong(songs.findIndex(s => s.text === song.text)); // Update original `songs`
+      renderFilteredSongs(); // Refresh view
+      alert('Favorited song removed from your Playlist');
     });
-    
-    li.appendChild(favoriteButton);
 
+    li.appendChild(favoriteButton);
     li.appendChild(deleteButton);
-    
+
     playlist.appendChild(li);
-  })
-}
+  });
+};
+
 filterButton.addEventListener('click', renderFilteredSongs);
 
-const toggleFavorite = (index) => {
-  songs[index].favorited = !songs[index].favorited
-
-  if (songs[index].favorited == true) {
-    filteredsongs.push(songs[index]); 
-  } else if (songs[index].favorited == false) {
-    filteredsongs.splice(index, 1); //check this after with the change
-  }
-  renderSongs();
-  renderFilteredSongs();
-  saveSongs();
-  saveFilteredSongs(); // check these as well
-}
-
 const deleteSong = (index) => {
-  songs.splice(index, 1);
-  filteredsongs.splice(index, 1);
+  songs.splice(index, 1); // Remove song from main list
   renderSongs();
-  renderFilteredSongs();
   saveSongs();
-  saveFilteredSongs();
-}
+};
 
 loadSongs();
 loadFilteredSongs();
