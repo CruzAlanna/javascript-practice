@@ -62,15 +62,35 @@ inviteButton.addEventListener('click', () => {
 const renderDogs = () => {
   dogPark.innerHTML = '';
 
-  dogs.forEach((dog) => {
-  addedDogImage = document.createElement('img');
-  addedDogImage.src = dog;
-  addedDogImage.classList.add('dog-image');
-  dogPark.appendChild(addedDogImage);
+  dogs.forEach((dog, index) => {
+    const li = document.createElement('li');
+    li.classList.add('dog-item');
+
+    addedDogImage = document.createElement('img');
+    addedDogImage.src = dog;
+    addedDogImage.alt = 'Dog Image'; // Accessibility improvement
+    addedDogImage.classList.add('dog-image');
+    dogPark.appendChild(addedDogImage);
+
+
+    const deleteButton = document.createElement('button');
+    deleteButton.textContent = 'Remove Dog';
+    deleteButton.addEventListener('click', () => {
+      deleteDog(index);
+      alert('This dog has left the park!');
+    });
+    
+    li.appendChild(addedDogImage);
+    li.appendChild(deleteButton);
+
+    dogPark.appendChild(li);
   })
 }
 
+const deleteDog = (index) => {
+  dogs.splice(index, 1);
+  renderDogs();
+  saveDogs();
+}
 
-
-
-// allow users to remove dogs from the park. => add button to splice
+loadDogs();
